@@ -22,9 +22,9 @@ export default function Home({ openTerminal, replayIntro }: { openTerminal: () =
   return <main id="conteudo" className="home">
     <section className="hero shell" id="inicio" aria-labelledby="hero-title">
       <div className="hero-text" data-hero>
-        <h1 id="hero-title">Erick Hatano<span className="accent">.</span></h1>
-        <p>Estudante de tecnologia. Desenvolvo sistemas web e automações.</p>
-        <Link className="hero-link" to="/#projetos">Ver projetos <ArrowDown size={16}/></Link>
+        <h1 id="hero-title">Erick <span className="hero-surname"><em>Hatano</em>.</span></h1>
+        <p>Estudo tecnologia e desenvolvo sistemas web e automações.</p>
+        <Link className="hero-link" to="/#projetos">Ver projetos <ArrowDown size={17}/></Link>
       </div>
       <Workspace/>
       <div className="hero-tools" data-hero>

@@ -54,3 +54,7 @@ A publicação Preview do Cloudflare Pages foi concluída para o commit funciona
 ## Revisão da home
 
 A home reúne os quatro projetos em barras com links diretos. Filtros, atividade no GitHub e detalhes do perfil abrem sob demanda. Os 4 testes unitários e 19 testes Playwright passaram após a revisão. O teste de desktop confirma as três etapas da reprodução manual com movimento reduzido. [Desktop](evidencias/home-revisada-desktop.webp) · [Mobile](evidencias/home-revisada-mobile.webp) · [Reprodução com movimento reduzido](evidencias/intro-movimento-reduzido.webp)
+
+## Composição visual e prévia de projetos
+
+A abertura da home usa uma nova imagem ilustrativa de estúdio, com trecho real do CodeAtlas no notebook. A galeria de projetos atualiza a captura no desktop com foco ou passagem do mouse sobre as barras. No mobile, cada barra mostra sua miniatura e abre a página correspondente. Os testes Playwright cobrem foco, mouse, filtros, navegação, responsividade e a introdução com movimento reduzido. [Desktop](evidencias/home-galeria-desktop.webp) · [Mobile](evidencias/home-galeria-mobile.webp)

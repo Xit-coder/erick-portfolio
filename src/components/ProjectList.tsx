@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, ArrowUpRight, SlidersHorizontal } from 'lucide-react'
+import { ArrowUpRight, SlidersHorizontal } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { filterProjects, projectPath, projects, shotPath, type Project } from '../data/projects'
 
@@ -31,7 +31,10 @@ export function ProjectList() {
   const [category, setCategory] = useState('')
   const [technology, setTechnology] = useState('')
   const [status, setStatus] = useState('')
+  const [previewSlug, setPreviewSlug] = useState(projects[0]?.slug)
   const filtered = filterProjects(projects, category, technology, status)
+  const preview = filtered.find(project => project.slug === previewSlug) ?? filtered[0]
+  const previewShot = preview?.shots[0]
   const clear = () => { setCategory(''); setTechnology(''); setStatus('') }
   return <>
     <div className="project-heading">
@@ -54,15 +57,31 @@ export function ProjectList() {
       </details>
     </div>
     <p className="sr-only" role="status">{filtered.length} projetos encontrados</p>
-    {filtered.length > 0 ? <ul className="project-directory" aria-label="Projetos em destaque">
-      {filtered.map(project => <li key={project.slug}>
-        <Link to={projectPath(project.slug)} className="project-row" aria-label={'Ver projeto ' + project.name}>
-          {project.shots[0] && <img src={shotPath(project.shots[0].file, true)} alt="" loading="lazy" decoding="async" width="128" height="72"/>}
-          <div className="project-row-copy"><h3>{project.name}</h3><p>{project.summary}</p></div>
-          <span className="project-row-category">{project.category}</span>
-          <ArrowRight size={20} aria-hidden="true"/>
-        </Link>
-      </li>)}
-    </ul> : <div className="empty"><p>Nenhum projeto corresponde aos filtros.</p><button className="button secondary" onClick={clear}>Limpar filtros</button></div>}
+    {preview ? <div className="project-browser">
+      {previewShot && <Link to={projectPath(preview.slug)} className="project-preview"
+        aria-label={'Abrir projeto ' + preview.name + ' pela prévia'}>
+        <img key={previewShot.file} src={shotPath(previewShot.file, true)}
+          srcSet={shotPath(previewShot.file, true) + ' 640w, ' + shotPath(previewShot.file) + ' 1200w'}
+          sizes="(min-width: 1300px) 620px, 51vw" alt={previewShot.alt}
+          width="640" height="360" loading="lazy" decoding="async"/>
+        <span className="project-preview-caption">
+          <span>{previewShot.label}</span>
+          <ArrowUpRight size={18} aria-hidden="true"/>
+        </span>
+      </Link>}
+      <ul className="project-directory" aria-label="Projetos em destaque">
+        {filtered.map(project => <li key={project.slug}>
+          <Link to={projectPath(project.slug)} className="project-row"
+            data-preview={preview.slug === project.slug}
+            onPointerEnter={event => { if (event.pointerType === 'mouse') setPreviewSlug(project.slug) }}
+            onFocus={() => setPreviewSlug(project.slug)}
+            aria-label={'Ver projeto ' + project.name}>
+            {project.shots[0] && <img src={shotPath(project.shots[0].file, true)} alt="" loading="lazy" decoding="async" width="128" height="72"/>}
+            <div className="project-row-copy"><h3>{project.name}</h3><p>{project.summary}</p></div>
+            <ArrowUpRight size={19} aria-hidden="true"/>
+          </Link>
+        </li>)}
+      </ul>
+    </div> : <div className="empty"><p>Nenhum projeto corresponde aos filtros.</p><button className="button secondary" onClick={clear}>Limpar filtros</button></div>}
   </>
 }

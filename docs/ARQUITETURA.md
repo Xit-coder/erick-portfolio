@@ -15,7 +15,7 @@
 
 React e TypeScript operam sobre rotas do React Router. O Vite gera os arquivos para navegador e um módulo usado apenas durante a pré-renderização. `scripts/prerender.mjs` gera HTML para a página inicial, os estudos de caso e a página de erro. Esse HTML é entregue com títulos, descrições e conteúdo para leitura e indexação. A hidratação ativa as interações. O Cloudflare Pages serve apenas arquivos estáticos.
 
-As fontes Manrope, Space Grotesk e JetBrains Mono são locais e variáveis. As capturas foram comprimidas em WebP. O hero tem uma versão reduzida para telas estreitas. A galeria é exibida nas páginas de projeto e os cartões carregam miniaturas responsivas. GSAP, terminal, configurações e menu de comandos são carregados sob demanda. A interface de entrada faz parte do bundle inicial. A coleção de ícones de marcas é do Simple Icons e os ícones de interface são do Lucide.
+As fontes Manrope, Space Grotesk e JetBrains Mono são locais e variáveis. O sobrenome na abertura da home usa Instrument Serif local. As capturas foram comprimidas em WebP. O hero tem uma versão reduzida para telas estreitas. A galeria é exibida nas páginas de projeto e os cartões carregam miniaturas responsivas. GSAP, terminal, configurações e menu de comandos são carregados sob demanda. A interface de entrada faz parte do bundle inicial. A coleção de ícones de marcas é do Simple Icons e os ícones de interface são do Lucide.
 
 ## Animação e ferramentas
 
@@ -28,7 +28,7 @@ O terminal interpreta uma lista fixa de comandos e não executa código externo.
 ## Atualizar o conteúdo
 
 - **Perfil e contatos**. Edite `src/data/site.ts`. Para publicar um endereço de e-mail, configure `VITE_CONTACT_EMAIL`. O formulário usa somente estado local durante a preparação e confirma a cópia separadamente do envio.
-- **Projetos**. Adicione um objeto em `src/data/projects.ts`. Use um `slug` único e estável, uma categoria, status, stack e capturas verificadas. As barras de navegação, os filtros, o menu de comandos, a rota e o sitemap derivam desses dados.
+- **Projetos**. Adicione um objeto em `src/data/projects.ts`. Use um `slug` único e estável, uma categoria, status, stack e capturas verificadas. As barras de navegação, a prévia, os filtros, o menu de comandos, a rota e o sitemap derivam desses dados. No desktop, foco ou passagem do mouse sobre uma barra atualiza a captura. Em telas estreitas, a captura acompanha cada barra.
 - **Imagens**. Coloque capturas reais em `public/media/`, em WebP, com nome sem extensão no campo `file`, descrição alternativa e rótulo. Use 1200 px de largura para a captura e gere uma versão de 640 px com o sufixo `-thumb`. Exclua dados pessoais e do ambiente de produção. A imagem da estação do hero é uma composição ilustrativa com um trecho público do CodeAtlas exibido em HTML.
 - **Tecnologias e DevLab**. Edite as listas em `src/data/site.ts`. Marque evidência de uso em projetos em `skills` e mantenha o status de cada item do DevLab atualizado. Os quatro itens iniciais estão planejados.
 - **GitHub**. `src/lib/github.ts` consulta a API pública com timeout de 4,5 segundos, cache local de 30 minutos e pausa para HTTP 403/429. Em falha, usa a última resposta em cache ou o link para o perfil. A seção apresenta repositórios públicos, linguagem principal e data do último push.

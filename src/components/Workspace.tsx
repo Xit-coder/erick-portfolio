@@ -24,7 +24,7 @@ export function Workspace() {
     <div className="workspace">
       <picture>
         <source media="(max-width: 760px)" srcSet="/media/workspace-small.webp"/>
-        <img src="/media/workspace.webp" alt="Notebook em uma estação de desenvolvimento, exibindo código TypeScript do projeto CodeAtlas" width="1280" height="853" fetchPriority="high"/>
+        <img src="/media/workspace.webp" alt="Notebook em uma estação de desenvolvimento, exibindo código TypeScript do projeto CodeAtlas" width="1440" height="960" fetchPriority="high"/>
       </picture>
       <div className="workspace-code" aria-hidden="true">
         <span className="editor-title">CodeAtlas / apps / api / src / github.ts</span>
@@ -34,6 +34,6 @@ export function Workspace() {
           {'\n'}</span>)}</pre>
       </div>
     </div>
-    <figcaption>Trecho do CodeAtlas em TypeScript</figcaption>
+    <figcaption className="sr-only">Trecho do CodeAtlas em TypeScript</figcaption>
   </figure>
 }
