@@ -1,0 +1,110 @@
+{
+  "mobile": {
+    "lighthouseVersion": "13.6.0",
+    "fetchTime": "2026-11-25T06:35:48.414Z",
+    "environment": {
+      "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36",
+      "hostUserAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "benchmarkIndex": 2697.5,
+      "credits": {
+        "axe-core": "4.14.0",
+        "ard": "0.91 (f073b1e)"
+      }
+    },
+    "formFactor": "mobile",
+    "throttlingMethod": "simulate",
+    "scores": {
+      "performance": 97,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100,
+      "agentic-browsing": 100
+    },
+    "metrics": {
+      "first-contentful-paint": {
+        "numericValue": 767.3649,
+        "numericUnit": "millisecond",
+        "displayValue": "0.8 s"
+      },
+      "largest-contentful-paint": {
+        "numericValue": 2663.3648999999996,
+        "numericUnit": "millisecond",
+        "displayValue": "2.7 s"
+      },
+      "speed-index": {
+        "numericValue": 1120.591722798388,
+        "numericUnit": "millisecond",
+        "displayValue": "1.1 s"
+      },
+      "total-blocking-time": {
+        "numericValue": 11,
+        "numericUnit": "millisecond",
+        "displayValue": "10 ms"
+      },
+      "cumulative-layout-shift": {
+        "numericValue": 0.0003118606337741219,
+        "numericUnit": "unitless",
+        "displayValue": "0"
+      },
+      "interactive": {
+        "numericValue": 2837.9649,
+        "numericUnit": "millisecond",
+        "displayValue": "2.8 s"
+      }
+    }
+  },
+  "desktop": {
+    "lighthouseVersion": "13.6.0",
+    "fetchTime": "2026-11-25T06:35:54.966Z",
+    "environment": {
+      "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36",
+      "hostUserAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "benchmarkIndex": 2791.5,
+      "credits": {
+        "axe-core": "4.14.0",
+        "ard": "0.91 (f073b1e)"
+      }
+    },
+    "formFactor": "desktop",
+    "throttlingMethod": "provided",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100,
+      "agentic-browsing": 100
+    },
+    "metrics": {
+      "first-contentful-paint": {
+        "numericValue": 152.847,
+        "numericUnit": "millisecond",
+        "displayValue": "0.2 s"
+      },
+      "largest-contentful-paint": {
+        "numericValue": 152.847,
+        "numericUnit": "millisecond",
+        "displayValue": "0.2 s"
+      },
+      "speed-index": {
+        "numericValue": 154,
+        "numericUnit": "millisecond",
+        "displayValue": "0.2 s"
+      },
+      "total-blocking-time": {
+        "numericValue": 0,
+        "numericUnit": "millisecond",
+        "displayValue": "0 ms"
+      },
+      "cumulative-layout-shift": {
+        "numericValue": 0.002338369361633169,
+        "numericUnit": "unitless",
+        "displayValue": "0.002"
+      },
+      "interactive": {
+        "numericValue": 152.847,
+        "numericUnit": "millisecond",
+        "displayValue": "0.2 s"
+      }
+    }
+  }
+}
