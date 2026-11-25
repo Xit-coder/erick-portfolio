@@ -1,5 +1,3 @@
-import { Terminal } from 'lucide-react'
-
 // Trecho de apps/api/src/github.ts do repositório público Code-Atlas (MIT).
 const snippet = [
   'export async function inspectRepository(',
@@ -23,7 +21,6 @@ const snippet = [
 
 export function Workspace() {
   return <figure className="hero-frame" data-hero>
-    <div className="frame-heading"><span aria-hidden="true"><i/><i/><i/></span><span><Terminal size={15}/> Estação de desenvolvimento</span><span className="frame-id" aria-hidden="true">EH</span></div>
     <div className="workspace">
       <picture>
         <source media="(max-width: 760px)" srcSet="/media/workspace-small.webp"/>
@@ -37,6 +34,6 @@ export function Workspace() {
           {'\n'}</span>)}</pre>
       </div>
     </div>
-    <figcaption><span><span className="activity-dot"/> CodeAtlas</span><span>TypeScript · GitHub API</span></figcaption>
+    <figcaption>Trecho do CodeAtlas em TypeScript</figcaption>
   </figure>
 }

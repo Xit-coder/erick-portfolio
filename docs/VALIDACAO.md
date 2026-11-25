@@ -50,3 +50,7 @@ A API pública do GitHub e as demonstrações do CodeAtlas e Colombia Unveiled r
 ## Homologação
 
 A publicação Preview do Cloudflare Pages foi concluída para o commit funcional `bee9cf1`. A verificação no Chromium validou a abertura, as quatro rotas de projeto, o carregamento das capturas, o GitHub com resposta real, o tratamento HTTP 404 e a ausência de exceções de página. O preview inclui `noindex`. [Abrir homologação](https://2a66f6f8.erick-hatano-portfolio.pages.dev) · [Captura do preview](evidencias/cloudflare-preview.webp)
+
+## Revisão da home
+
+A home reúne os quatro projetos em barras com links diretos. Filtros, atividade no GitHub e detalhes do perfil abrem sob demanda. Os 4 testes unitários e 19 testes Playwright passaram após a revisão. O teste de desktop confirma as três etapas da reprodução manual com movimento reduzido. [Desktop](evidencias/home-revisada-desktop.webp) · [Mobile](evidencias/home-revisada-mobile.webp) · [Reprodução com movimento reduzido](evidencias/intro-movimento-reduzido.webp)

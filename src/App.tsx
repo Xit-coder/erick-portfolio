@@ -15,7 +15,7 @@ const Settings = lazy(() => import('./components/Settings'))
 const TerminalPanel = lazy(() => import('./components/TerminalPanel'))
 type Panel = 'palette' | 'settings' | 'terminal' | null
 type Theme = 'dark' | 'light'
-type IntroMode = 'automatic' | 'manual' | 'reduced' | 'unavailable' | null
+type IntroMode = 'automatic' | 'manual' | 'unavailable' | null
 
 class ToolBoundary extends Component<{ children: ReactNode; onFailure: () => void }, { failed: boolean }> {
   state = { failed: false }
@@ -38,13 +38,13 @@ export function App() {
     writeStorage(introKey, '1', true)
     setIntro(null)
   }, [])
-  const introUnavailable = useCallback((reason: 'reduced' | 'unavailable' = 'unavailable') => {
-    setIntro(mode => mode === 'manual' ? reason : null)
+  const introUnavailable = useCallback(() => {
+    setIntro(mode => mode === 'manual' ? 'unavailable' : null)
   }, [])
   const toggleTheme = useCallback(() => {
     const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'
     document.documentElement.dataset.theme = next
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'light' ? '#f8f6fb' : '#101014')
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'light' ? '#f7f4f2' : '#151416')
     writeStorage('portfolio-theme', next)
     setTheme(next)
   }, [])
@@ -54,7 +54,7 @@ export function App() {
   const replayIntro = useCallback(() => {
     setPanel(null)
     setTerminalState('closed')
-    setIntro(prefersReducedMotion() ? 'reduced' : 'manual')
+    setIntro('manual')
   }, [])
 
   useEffect(() => {
@@ -98,7 +98,6 @@ export function App() {
     <footer className="footer">
       <div className="shell footer-inner">
         <Brand/>
-        <span>Portfólio de desenvolvimento</span>
         <div><button className="text-link" onClick={replayIntro}><RotateCcw size={16}/> Reproduzir introdução</button>
           <Link className="icon-button" to="/#inicio" aria-label="Voltar ao início"><ArrowUp size={19}/></Link></div>
       </div>
@@ -106,10 +105,9 @@ export function App() {
     {terminalState !== 'closed' && !terminalVisible && <button className="terminal-dock button secondary" onClick={openTerminal}><Terminal size={17}/> Retomar terminal</button>}
     {feedback && <div className="toast" role="status">{feedback}</div>}
     {animatedIntro && <ToolBoundary onFailure={introUnavailable}>
-      <Intro close={finishIntro} unavailable={introUnavailable}/>
+      <Intro close={finishIntro} unavailable={introUnavailable} manual={intro === 'manual'}/>
     </ToolBoundary>}
-    {(intro === 'reduced' || intro === 'unavailable') &&
-      <IntroPreview close={finishIntro} reduced={intro === 'reduced'}/>}
+    {intro === 'unavailable' && <IntroPreview close={finishIntro}/>}
     {(panel || terminalState !== 'closed') && <ToolBoundary onFailure={() => { closeTerminal(); setFeedback('A ferramenta está temporariamente indisponível.') }}>
       <Suspense fallback={<div className="toast" role="status">Carregando ferramenta…</div>}>
         {panel === 'palette' && <Palette close={() => setPanel(null)} theme={toggleTheme} terminal={openTerminal} reboot={replayIntro}/>}

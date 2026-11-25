@@ -14,6 +14,10 @@ export function usePageMotion(intro: boolean) {
       try { id = decodeURIComponent(hash.slice(1)) } catch { id = '' }
       const anchor = id ? document.getElementById(id) : null
       if (anchor) {
+        const disclosure = anchor.matches('.profile-note') ? anchor.querySelector(':scope > details') : anchor.closest('details')
+        if (disclosure instanceof HTMLDetailsElement && !disclosure.open) {
+          disclosure.open = true
+        }
         anchor.scrollIntoView({ block: 'start', behavior: previous && !prefersReducedMotion() ? 'smooth' : 'instant' })
         if (previous) {
           anchor.tabIndex = -1

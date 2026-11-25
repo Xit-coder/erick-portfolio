@@ -39,9 +39,7 @@ export function Contact() {
   return <section className="contact-section section" id="contato">
     <div className="shell contact-grid">
       <div data-reveal>
-        <p className="eyebrow"><span/> CONTATO</p>
-        <h2>Vamos conversar<span className="accent">?</span></h2>
-        <p className="section-description">Para trocar ideias, conversar sobre projetos ou compartilhar algo que você está construindo.</p>
+        <h2>Contato</h2>
         <div className="contact-links">
           <a href={profile.github} target="_blank" rel="noreferrer"><Github size={19}/> GitHub <ArrowUpRight size={16}/></a>
           <a href={profile.linkedin} target="_blank" rel="noreferrer"><Linkedin size={19}/> LinkedIn <ArrowUpRight size={16}/></a>
