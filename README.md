@@ -2,7 +2,7 @@
 
 Portfólio profissional de Erick Hatano, estudante de tecnologia e desenvolvedor Full Stack. O site apresenta quatro estudos de caso, tecnologias aplicadas em projetos, o DevLab, um terminal simulado e um menu de comandos.
 
-[Abrir a homologação no Cloudflare Pages](https://2a66f6f8.erick-hatano-portfolio.pages.dev)
+[Abrir a homologação no Cloudflare Pages](https://feat-portfolio-complete-rede.erick-hatano-portfolio.pages.dev)
 
 ## Executar
 

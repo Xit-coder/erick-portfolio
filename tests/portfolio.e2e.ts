@@ -10,7 +10,9 @@ async function screenshot(page: Page, name: string, fullPage = false) {
   if (evidence) await page.screenshot({ path: evidence + '/' + name + '.png', fullPage, animations: 'disabled' })
 }
 
-test('a introdução exibe as três fases, encerra e fica registrada na sessão', async ({ page }) => {
+test('a introdução completa funciona no desktop e pode ser reproduzida na mesma sessão', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/')
   const intro = page.getByRole('dialog', { name: 'Introdução do portfólio' })
   await expect(intro).toBeVisible()
@@ -26,6 +28,10 @@ test('a introdução exibe as três fases, encerra e fica registrada na sessão'
   await page.reload()
   await expect(page.getByRole('heading', { name: 'Erick Hatano.' })).toBeVisible()
   await expect(intro).toHaveCount(0)
+  await page.getByRole('button', { name: 'Ver introdução', exact: true }).click()
+  await expect(intro.getByText('Connection established.', { exact: true })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(intro).toHaveCount(0)
 })
 test('pular e reproduzir a abertura, inclusive em tela móvel', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
@@ -38,12 +44,17 @@ test('pular e reproduzir a abertura, inclusive em tela móvel', async ({ page })
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog')).toHaveCount(0)
 })
-test('movimento reduzido é respeitado na entrada e ao reproduzir', async ({ page }) => {
+test('movimento reduzido pula a entrada automática e oferece uma introdução estática', async ({ page }) => {
   await reduced(page)
   await page.goto('/')
-  await expect(page.getByRole('dialog')).toHaveCount(0)
-  await page.getByRole('button', { name: 'Reproduzir introdução' }).click()
-  await expect(page.getByText('O movimento reduzido está ativo neste dispositivo.')).toBeVisible()
+  const intro = page.getByRole('dialog', { name: 'Introdução do portfólio' })
+  await expect(intro).toHaveCount(0)
+  await page.getByRole('button', { name: 'Ver introdução', exact: true }).click()
+  await expect(intro.getByText('O movimento reduzido está ativo.', { exact: false })).toBeVisible()
+  await expect(intro.getByText('Autenticação simulada')).toBeVisible()
+  await expect(intro.getByText('Acesso concedido')).toBeVisible()
+  await intro.getByRole('button', { name: 'Voltar ao portfólio' }).click()
+  await expect(intro).toHaveCount(0)
 })
 test('filtra projetos, navega para o estudo de caso e opera a galeria', async ({ page }) => {
   await reduced(page)
@@ -224,7 +235,12 @@ test('o conteúdo continua navegável quando o módulo de animação falha', asy
   await page.route('**/assets/gsap-*.js', async route => { attempted = true; await route.abort() })
   await page.goto('/')
   await expect.poll(() => attempted).toBe(true)
-  await expect(page.getByRole('dialog', { name: 'Introdução do portfólio' })).toBeHidden({ timeout: 7000 })
+  const intro = page.getByRole('dialog', { name: 'Introdução do portfólio' })
+  await expect(intro).toBeHidden({ timeout: 7000 })
+  expect(await page.evaluate(() => sessionStorage.getItem('eh-intro-seen-v2'))).toBeNull()
+  await page.getByRole('button', { name: 'Ver introdução', exact: true }).click()
+  await expect(intro.getByText('A animação não carregou.', { exact: false })).toBeVisible()
+  await intro.getByRole('button', { name: 'Voltar ao portfólio' }).click()
   await page.getByRole('link', { name: 'Ver projetos', exact: true }).click()
   await expect(page).toHaveURL(/#projetos$/)
   await expect(page.getByRole('link', { name: 'Ver projeto VÉRTA' })).toBeVisible()

@@ -1,21 +1,30 @@
 import { useEffect, useRef } from 'react'
-import { ArrowRight, Check, LockKeyhole, TerminalSquare } from 'lucide-react'
+import { ArrowRight, Check, LockKeyhole, TerminalSquare, X } from 'lucide-react'
 import { Dialog } from './Dialog'
 
 const boot = ['Initializing system...', 'Loading interface modules...', 'Establishing secure connection...', 'Connection established.']
 
-export default function Intro({ close }: { close: () => void }) {
+export default function Intro({ close, unavailable }: {
+  close: () => void; unavailable: (reason?: 'reduced' | 'unavailable') => void
+}) {
   const stage = useRef<HTMLDivElement>(null)
   useEffect(() => {
     let disposed = false
     let revert: (() => void) | undefined
-    const watchdog = window.setTimeout(close, 5850)
+    let watchdog: number | undefined
     const motion = matchMedia('(prefers-reduced-motion: reduce)')
-    const motionChanged = () => { if (motion.matches) close() }
+    if (motion.matches) {
+      unavailable('reduced')
+      return
+    }
+    const motionChanged = () => { if (motion.matches) unavailable('reduced') }
     motion.addEventListener('change', motionChanged)
+    const loadTimeout = window.setTimeout(() => { disposed = true; unavailable() }, 1800)
     import('gsap').then(({ gsap }) => {
       const current = stage.current
       if (disposed || !current) return
+      clearTimeout(loadTimeout)
+      watchdog = window.setTimeout(() => unavailable(), 5850)
       const context = gsap.context(() => {
         const timeline = gsap.timeline({ onComplete: close, defaults: { ease: 'power2.out' } })
         function type(node: HTMLElement, value: string, duration: number, at: number) {
@@ -36,14 +45,15 @@ export default function Intro({ close }: { close: () => void }) {
           .to(current.closest('dialog'), { opacity: 0, duration: .31 }, 5.00)
       }, current)
       revert = () => context.revert()
-    }).catch(close)
+    }).catch(() => { if (!disposed) unavailable() })
     return () => {
       disposed = true
+      clearTimeout(loadTimeout)
       clearTimeout(watchdog)
       motion.removeEventListener('change', motionChanged)
       revert?.()
     }
-  }, [close])
+  }, [close, unavailable])
   return <Dialog label="Introdução do portfólio" className="intro-dialog" onClose={close}>
     <p className="sr-only">Sequência ilustrativa de entrada. O portfólio está disponível ao pular ou ao final da introdução.</p>
     <div className="intro-stage" ref={stage} aria-hidden="true">
@@ -66,5 +76,24 @@ export default function Intro({ close }: { close: () => void }) {
       </div>
     </div>
     <button className="intro-skip" onClick={close} autoFocus>Pular introdução <ArrowRight size={16}/></button>
+  </Dialog>
+}
+
+
+export function IntroPreview({ close, reduced }: { close: () => void; reduced: boolean }) {
+  return <Dialog label="Introdução do portfólio" className="tool-dialog intro-preview" onClose={close}>
+    <div className="tool-heading"><TerminalSquare size={19}/><h2>EH SYSTEMS</h2>
+      <button className="icon-button" aria-label="Fechar introdução" onClick={close} autoFocus><X size={20}/></button>
+    </div>
+    <div className="intro-preview-content">
+      <p>{reduced ? 'O movimento reduzido está ativo. Esta é a versão estática da abertura.'
+        : 'A animação não carregou. Veja a versão estática da abertura.'}</p>
+      <ol>
+        <li><strong>Inicialização</strong><span>Developer Environment v2.0</span></li>
+        <li><strong>Autenticação simulada</strong><span>USERNAME visitor · PASSWORD ••••••••••••</span></li>
+        <li><strong>Acesso concedido</strong><span>Welcome to the developer workspace.</span></li>
+      </ol>
+      <button className="button primary" onClick={close}>Voltar ao portfólio</button>
+    </div>
   </Dialog>
 }

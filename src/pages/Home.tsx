@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight, Braces, Code2, Database, FlaskConical, GitBranch, Layers3, Terminal } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, Braces, Code2, Database, FlaskConical, GitBranch, Layers3, RotateCcw, Terminal } from 'lucide-react'
 import { Github } from '../components/BrandIcons'
 import { Link } from 'react-router-dom'
 import { Contact } from '../components/Contact'
@@ -14,7 +14,7 @@ const experience = [
   ['Interface e acessibilidade', 'No projeto em grupo Colombia Unveiled, a mesma base de conteúdo sustenta leitura, questionários e apresentação.'],
 ]
 
-export default function Home({ openTerminal }: { openTerminal: () => void }) {
+export default function Home({ openTerminal, replayIntro }: { openTerminal: () => void; replayIntro: () => void }) {
   return <main id="conteudo">
     <section className="hero shell" id="inicio" aria-labelledby="hero-title">
       <div className="hero-text">
@@ -31,7 +31,10 @@ export default function Home({ openTerminal }: { openTerminal: () => void }) {
       <Workspace/>
       <div className="hero-foot" data-hero>
         <Link to="/#projetos"><ArrowDown size={17}/> Explorar portfólio</Link>
-        <button onClick={openTerminal}><Terminal size={17}/> Abrir terminal</button>
+        <div className="hero-tools">
+          <button onClick={replayIntro}><RotateCcw size={17}/> Ver introdução</button>
+          <button onClick={openTerminal}><Terminal size={17}/> Abrir terminal</button>
+        </div>
       </div>
     </section>
 

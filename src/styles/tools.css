@@ -71,3 +71,25 @@ dialog::backdrop{background:rgb(7 5 12 / 76%)}
 .intro-skip{position:absolute;bottom:max(1rem,env(safe-area-inset-bottom));right:max(1rem,env(safe-area-inset-right));display:flex;align-items:center;gap:.5rem;background:#15121d;color:#ded1ec;border:1px solid #40324e;border-radius:6px;padding:.5rem .69rem;font-size:.8rem}
 .intro-skip:hover{color:#fff;border-color:#d7b7fc}
 .intro-skip:focus-visible{outline-color:#d5b9ff}
+
+.intro-preview-content {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+.intro-preview-content p {
+  color: var(--muted);
+}
+.intro-preview-content ol {
+  display: grid;
+  gap: 0.65rem;
+  padding-inline-start: 1.35rem;
+}
+.intro-preview-content li span {
+  display: block;
+  color: var(--muted);
+  font: 0.75rem/1.6 var(--mono);
+}
+.intro-preview-content .button {
+  justify-self: start;
+}

@@ -144,3 +144,15 @@ button{color:inherit}
   .mobile-socials{display:flex;grid-column:1/-1;gap:1.2rem}
   .header nav .mobile-socials a{display:flex;align-items:center;gap:.38rem;border:0}
 }
+
+.hero-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.2rem;
+}
+@media (max-width: 540px) {
+  .hero-foot {
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+  }
+}

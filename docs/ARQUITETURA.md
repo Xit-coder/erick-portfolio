@@ -15,13 +15,13 @@
 
 React e TypeScript operam sobre rotas do React Router. O Vite gera os arquivos para navegador e um módulo usado apenas durante a pré-renderização. `scripts/prerender.mjs` gera HTML para a página inicial, os estudos de caso e a página de erro. Esse HTML é entregue com títulos, descrições e conteúdo para leitura e indexação. A hidratação ativa as interações. O Cloudflare Pages serve apenas arquivos estáticos.
 
-As fontes Manrope, Space Grotesk e JetBrains Mono são locais e variáveis. As capturas foram comprimidas em WebP. O hero tem uma versão reduzida para telas estreitas. A galeria é exibida nas páginas de projeto e os cartões carregam miniaturas responsivas. GSAP, introdução, terminal, configurações e menu de comandos são carregados sob demanda. A coleção de ícones de marcas é do Simple Icons e os ícones de interface são do Lucide.
+As fontes Manrope, Space Grotesk e JetBrains Mono são locais e variáveis. As capturas foram comprimidas em WebP. O hero tem uma versão reduzida para telas estreitas. A galeria é exibida nas páginas de projeto e os cartões carregam miniaturas responsivas. GSAP, terminal, configurações e menu de comandos são carregados sob demanda. A interface de entrada faz parte do bundle inicial. A coleção de ícones de marcas é do Simple Icons e os ícones de interface são do Lucide.
 
 ## Animação e ferramentas
 
-`Intro.tsx` usa uma timeline do GSAP para digitação, validação e revelação. A sequência leva aproximadamente 5,3 segundos, com encerramento de segurança em 5,85 segundos após a montagem. O diálogo nativo mantém o foco no botão de pular. Escape também fecha a abertura. A autenticação é cenográfica e suas credenciais são texto decorativo.
+`Intro.tsx` usa uma timeline do GSAP para digitação, validação e revelação. A sequência leva aproximadamente 5,3 segundos. Há um limite de 1,8 segundo para carregar o GSAP e um temporizador de segurança de 5,85 segundos após a inicialização da timeline. O diálogo nativo mantém o foco no botão de pular. Escape também fecha a abertura. A autenticação é cenográfica e suas credenciais são texto decorativo.
 
-A primeira abertura registra a sessão em `sessionStorage`. Configurações, rodapé, menu de comandos e `reboot` podem reproduzi-la. O navegador com movimento reduzido pula essa sequência, mesmo em caso de replay. `navigation.ts` coordena a entrada das páginas e as animações de rolagem. A limpeza cancela observadores, listeners e contextos GSAP na desmontagem.
+A conclusão ou a dispensa da abertura registra a sessão em `sessionStorage`. O botão Ver introdução na página inicial, as configurações, o rodapé, o menu de comandos e `reboot` permitem voltar à sequência. Com movimento reduzido, o site pula a exibição automática e apresenta as três etapas em uma janela estática quando solicitadas. Se o GSAP estiver indisponível, o visitante pode seguir navegando e abrir a versão estática manualmente. `navigation.ts` coordena a entrada das páginas e as animações de rolagem. A limpeza cancela observadores, listeners e contextos GSAP na desmontagem.
 
 O terminal interpreta uma lista fixa de comandos e não executa código externo. Seu histórico é local ao painel e preservado ao minimizar. O menu de comandos usa busca sem acentos e navegação por setas, Enter e Escape. Os atalhos Ctrl + K e Cmd + K funcionam em toda a interface.
 

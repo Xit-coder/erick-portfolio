@@ -2,6 +2,7 @@ import { ArrowUp, RotateCcw, Terminal } from 'lucide-react'
 import { Component, Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from 'react'
 import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import { Brand, Header } from './components/Header'
+import Intro, { IntroPreview } from './components/Intro'
 import { pageMetadata } from './data/seo'
 import { introKey, prefersReducedMotion, readStorage, writeStorage } from './lib/browser'
 import { usePageMotion } from './lib/navigation'
@@ -9,12 +10,12 @@ import Home from './pages/Home'
 import { ProjectPage } from './pages/Project'
 import { NotFound } from './pages/NotFound'
 
-const Intro = lazy(() => import('./components/Intro'))
 const Palette = lazy(() => import('./components/Palette'))
 const Settings = lazy(() => import('./components/Settings'))
 const TerminalPanel = lazy(() => import('./components/TerminalPanel'))
 type Panel = 'palette' | 'settings' | 'terminal' | null
 type Theme = 'dark' | 'light'
+type IntroMode = 'automatic' | 'manual' | 'reduced' | 'unavailable' | null
 
 class ToolBoundary extends Component<{ children: ReactNode; onFailure: () => void }, { failed: boolean }> {
   state = { failed: false }
@@ -25,19 +26,21 @@ class ToolBoundary extends Component<{ children: ReactNode; onFailure: () => voi
 
 export function App() {
   const [theme, setTheme] = useState<Theme>('dark')
-  const [intro, setIntro] = useState(false)
+  const [intro, setIntro] = useState<IntroMode>(null)
   const [panel, setPanel] = useState<Panel>(null)
   const [terminalState, setTerminalState] = useState<'closed' | 'open' | 'minimized'>('closed')
   const [feedback, setFeedback] = useState('')
   const { pathname } = useLocation()
-  usePageMotion(intro)
+  const animatedIntro = intro === 'automatic' || intro === 'manual'
+  usePageMotion(intro !== null)
 
-  const endIntro = useCallback(() => setIntro(false), [])
-  useEffect(() => {
-    if (!intro) return
-    const timer = setTimeout(endIntro, 6500)
-    return () => clearTimeout(timer)
-  }, [intro, endIntro])
+  const finishIntro = useCallback(() => {
+    writeStorage(introKey, '1', true)
+    setIntro(null)
+  }, [])
+  const introUnavailable = useCallback((reason: 'reduced' | 'unavailable' = 'unavailable') => {
+    setIntro(mode => mode === 'manual' ? reason : null)
+  }, [])
   const toggleTheme = useCallback(() => {
     const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'
     document.documentElement.dataset.theme = next
@@ -51,20 +54,14 @@ export function App() {
   const replayIntro = useCallback(() => {
     setPanel(null)
     setTerminalState('closed')
-    if (prefersReducedMotion()) {
-      setFeedback('O movimento reduzido está ativo neste dispositivo.')
-      return
-    }
-    writeStorage(introKey, '1', true)
-    setIntro(true)
+    setIntro(prefersReducedMotion() ? 'reduced' : 'manual')
   }, [])
 
   useEffect(() => {
     const stored = readStorage('portfolio-theme')
     setTheme(stored === 'light' ? 'light' : 'dark')
     if (pageMetadata(window.location.pathname).index && !readStorage(introKey, true) && !prefersReducedMotion()) {
-      writeStorage(introKey, '1', true)
-      setIntro(true)
+      setIntro('automatic')
     }
   }, [])
   useEffect(() => {
@@ -94,7 +91,7 @@ export function App() {
     <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <Header theme={theme} toggleTheme={toggleTheme} open={setPanel}/>
     <Routes>
-      <Route path="/" element={<Home openTerminal={openTerminal}/>}/>
+      <Route path="/" element={<Home openTerminal={openTerminal} replayIntro={replayIntro}/>}/>
       <Route path="/projetos/:slug" element={<ProjectPage/>}/>
       <Route path="*" element={<NotFound/>}/>
     </Routes>
@@ -108,7 +105,11 @@ export function App() {
     </footer>
     {terminalState !== 'closed' && !terminalVisible && <button className="terminal-dock button secondary" onClick={openTerminal}><Terminal size={17}/> Retomar terminal</button>}
     {feedback && <div className="toast" role="status">{feedback}</div>}
-    {intro && <ToolBoundary onFailure={endIntro}><Suspense fallback={null}><Intro close={endIntro}/></Suspense></ToolBoundary>}
+    {animatedIntro && <ToolBoundary onFailure={introUnavailable}>
+      <Intro close={finishIntro} unavailable={introUnavailable}/>
+    </ToolBoundary>}
+    {(intro === 'reduced' || intro === 'unavailable') &&
+      <IntroPreview close={finishIntro} reduced={intro === 'reduced'}/>}
     {(panel || terminalState !== 'closed') && <ToolBoundary onFailure={() => { closeTerminal(); setFeedback('A ferramenta está temporariamente indisponível.') }}>
       <Suspense fallback={<div className="toast" role="status">Carregando ferramenta…</div>}>
         {panel === 'palette' && <Palette close={() => setPanel(null)} theme={toggleTheme} terminal={openTerminal} reboot={replayIntro}/>}
